@@ -529,6 +529,5 @@ var sendRequest = function (data) {
     data.callback(error, error ? null : body, res);
   });
 }
-//request('http://www.google.com', function (error, response, body) {})
 
 module.exports = Openpay;
