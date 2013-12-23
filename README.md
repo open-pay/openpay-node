@@ -103,7 +103,3 @@ To run the tests you'll need your sandbox credentials: merchant id and private k
 $ npm install -g mocha
 $ npm test
 ```
-
-## Author
-
-Originally by [Roman Villegas](https://github.com/romanvi).
