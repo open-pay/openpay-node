@@ -106,4 +106,4 @@ $ npm test
 
 ## Author
 
-Originally by [Roman Villegas](https://github.com/abh) (ask@develooper.com). 
+Originally by [Roman Villegas](https://github.com/romanvi).
