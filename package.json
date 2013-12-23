@@ -1,0 +1,13 @@
+{
+  "name": "openpay",
+  "description": "Openpay REST API library for Node.js",
+  "version": "0.0.1",
+  "dependencies": {
+    "underscore": "1.5.x",
+    "request": "2.29.x"
+  },
+  "devDependencies": {},
+  "engines": {
+    "node": ">=0.6.x"
+  }
+}
