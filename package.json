@@ -6,6 +6,7 @@
     "underscore": "1.5.x",
     "request": "2.29.x"
   },
+  "main": "lib/openpay.js",
   "devDependencies": {},
   "scripts": {
     "test": "mocha"
