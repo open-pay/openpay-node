@@ -1,4 +1,4 @@
-# Openpay node.js API library
+# Openpay node.js bindings
 
 ## Installation
 
