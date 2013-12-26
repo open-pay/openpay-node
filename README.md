@@ -21,10 +21,9 @@ openpay.< resource_name >.< method_name >( ... )
 
 All methods accept an optional callback as last argument. 
 
-The callback function should follow the format: function(error, body, response) {...}.
+The callback function should follow the format: function(error, body) {...}.
 * error: null if the response status code is 200, 201, 204
 * body: null if the response status code is different from 200, 201, 204
-* response: contains the full http reponse
 
 ## Examples
 
@@ -45,10 +44,9 @@ var newCustomer = {
   "phone_number":"44209087654"
 };
 
-openpay.customers.create(newCustomer, function(error, body, response) {
-    error;    // null if no error occurred (status code == 200||201||204)
+openpay.customers.create(newCustomer, function(error, body) {
+    error;    // null if no error occurred (status code != 200||201||204)
     body;     // contains the object returned if no error occurred (status code == 200||201||204)
-    response; // the full http response
 });
 ```
 
@@ -67,7 +65,7 @@ var newCharge = {
   "description" : "Service Charge",
   "order_id" : "oid-00721"
 };
-openpay.charges.create(testCreateCharge, function (error, body, response){
+openpay.charges.create(testCreateCharge, function (error, body){
   // ...
 });
 ```
@@ -83,7 +81,7 @@ var payout = {
   "amount" : 10.50,
   "description" : "Monthly payment"
 };
-openpay.payouts.create(payout, function (error, body, response){
+openpay.payouts.create(payout, function (error, body){
   // ...
 });
 ```
@@ -97,7 +95,7 @@ openpay.payouts.create(payout, function (error, body, response){
 
 ## Development
 
-To run the tests you'll need your sandbox credentials: merchant id and private key from your [Dashboard](https://sandbox-dashboard.openpay.mx/)):
+To run the tests you'll need your sandbox credentials: merchant id and private key from your [Dashboard](https://sandbox-dashboard.openpay.mx/):
 
 ```bash
 $ npm install -g mocha
