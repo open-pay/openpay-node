@@ -729,17 +729,6 @@ describe('Testing whole API', function(){
 
 });
 
-/*function t(a){
-  return a+2;
-}
-
-describe('a', function(){
-  it('b', function(done){
-    assert.equal(t(2), 3);
-    done();
-  });
-});*/
-
 
 function printLog(code, body, error){
   if(enableLogging){
