@@ -2,6 +2,7 @@ var assert = require('assert');
 var _ = require('underscore');
 
 var Openpay = require('../lib/openpay');
+/*Sandbox*/
 var openpay = new Openpay('m1qp3av1ymcfufkuuoah', 'sk_ed05f1de65fa4a67a3d3056a4efa2905');
 openpay.setTimeout(10000);
 
@@ -207,6 +208,11 @@ describe('Testing whole API', function(){
     "amount" : 50,
     "description" : "Test bank account charge"
   };
+  var testCreateStoreCharge = {
+    "method" : "store",
+    "amount" : 60.01,
+    "description" : "Test store charge"
+  };
   var testRefundData = {"description":"Testing refund"};
 
   describe('Testing charges', function(){
@@ -266,6 +272,19 @@ describe('Testing whole API', function(){
             printLog(response.statusCode, body, error);
             assert.equal(response.statusCode == 200 || response.statusCode == 201, true, 'Status code == 200');
             newlyCreatedTransactionId = body.id;
+            done();
+          });
+        });
+      });
+      describe('Create charge on Store', function(){
+        it('should return statusCode 200', function (done){
+          openpay.charges.create(testCreateStoreCharge, function (error, body, response){
+            assert.equal(response.statusCode, 200, 'Status code != 200');
+            assert.notEqual(body.id, null);
+            assert.equal(body.method, 'store');
+            assert.equal(body.payment_method.type, 'store');
+            assert.notEqual(body.payment_method.reference, null);
+            assert.notEqual(body.payment_method.barcode_url, null);
             done();
           });
         });
