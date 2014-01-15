@@ -645,7 +645,6 @@ describe('Testing whole API', function(){
     });
   });
 
-
   describe('Testing subscriptions', function(){
     var newlyCreatedSubscriptionId = '';
     describe('Create subscription', function(){
@@ -679,7 +678,7 @@ describe('Testing whole API', function(){
     });
     describe('Update subscription', function(){
       it('should return statusCode 200', function (done){
-        openpay.customers.subscriptions.update(newlyCreatedCustomerId, newlyCreatedSubscriptionId, {"trial_end_date": "2014-01-11"}, function (error, body, response){
+        openpay.customers.subscriptions.update(newlyCreatedCustomerId, newlyCreatedSubscriptionId, {"trial_end_date": "2014-02-11"}, function (error, body, response){
           printLog(response.statusCode, body, error);
           assert.equal(response.statusCode, 200, '');
           done();
