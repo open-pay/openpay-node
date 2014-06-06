@@ -24,6 +24,18 @@ describe('Testing whole API', function(){
     "phone_number":"123456789"
   };
 
+  describe('Testing merchant', function() {
+    describe('Get merchant', function(){
+      it('should return statusCode 200', function (done){
+        openpay.merchant.get(function (error, body, response){
+          printLog(response.statusCode, body, error);
+          assert.equal(response.statusCode, 200, '');
+          done();
+        });
+      });
+    });
+  });
+
   var newlyCreatedCustomerId = '';
   describe('Testing customers', function(){
     describe('Create customer', function(){
@@ -203,6 +215,19 @@ describe('Testing whole API', function(){
     "amount" : 20,
     "description" : "Test Charge"
   };
+  var testCreateChargeWithoutCapture = {
+    "method": "card",
+    "card": {
+      "card_number": "4111111111111111",
+      "holder_name": "Aa Bb",
+      "expiration_year": "20",
+      "expiration_month": "12",
+      "cvv2": "110",
+    },
+    "amount" : 20,
+    "description" : "Test Charge",
+    "capture" : false
+  };
   var testCreateBankAccountCharge = {
     "method" : "bank_account",
     "amount" : 50,
@@ -262,6 +287,25 @@ describe('Testing whole API', function(){
           openpay.charges.refund(newlyCreatedTransactionId, testRefundData, function (error, body, response){
             printLog(response.statusCode, body, error);
             assert.equal(response.statusCode, 200, '');
+            done();
+          });
+        });
+      });
+      describe('Create charge without capture', function(){
+        it('should return statusCode 200||201', function (done){
+          openpay.charges.create(testCreateChargeWithoutCapture, function (error, body, response){
+            printLog(response.statusCode, body, error);
+            assert.equal(response.statusCode == 200 || response.statusCode == 201, true, 'Status code == 200');
+            newlyCreatedTransactionId = body.id;
+            done();
+          });
+        });
+      });
+      describe('Capture charge', function(){
+        it('should return statusCode 200||201', function (done){
+          openpay.charges.capture(newlyCreatedTransactionId, null, function (error, body, response){
+            printLog(response.statusCode, body, error);
+            assert.equal(response.statusCode == 200 || response.statusCode == 201, true, 'Status code == 200');
             done();
           });
         });
@@ -678,7 +722,7 @@ describe('Testing whole API', function(){
     });
     describe('Update subscription', function(){
       it('should return statusCode 200', function (done){
-        openpay.customers.subscriptions.update(newlyCreatedCustomerId, newlyCreatedSubscriptionId, {"trial_end_date": "2014-02-11"}, function (error, body, response){
+        openpay.customers.subscriptions.update(newlyCreatedCustomerId, newlyCreatedSubscriptionId, {"trial_end_date": "2020-02-11"}, function (error, body, response){
           printLog(response.statusCode, body, error);
           assert.equal(response.statusCode, 200, '');
           done();
