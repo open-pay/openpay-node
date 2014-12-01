@@ -1,12 +1,13 @@
 var assert = require('assert');
 var _ = require('underscore');
+var request = require('request');
 
 var Openpay = require('../lib/openpay');
 /*Sandbox*/
 var openpay = new Openpay('m1qp3av1ymcfufkuuoah', 'sk_ed05f1de65fa4a67a3d3056a4efa2905');
 openpay.setTimeout(10000);
 
-var enableLogging = false;
+var enableLogging = true;
 var testCreateCharges = true;
 var testCreatePayouts = true;
 var testBankAccountId = 'bmopptj5st1hx8ddouha';
@@ -24,6 +25,92 @@ describe('Testing whole API', function(){
     "phone_number":"123456789"
   };
 
+  describe('Testing Webhook', function() {
+	  var webhook;
+	  var webhook_params = {                                            
+			  'url' : 'http://requestb.in/qozy7dqp',
+			  'event_types' : [
+			    'charge.refunded',
+			    'charge.failed',
+			    'charge.cancelled',
+			    'charge.created',
+			    'chargeback.accepted'
+			  ]
+	  };
+	  
+	  describe('Create Webhook', function() {
+		  it('Should return statusCode 201', function(done) {
+			  openpay.webhooks.create(webhook_params, function (error, body, response){
+		          printLog(response.statusCode, body, error);
+		          assert.equal(response.statusCode, 201, '');
+		          webhook = body;
+		          done();
+		      });  
+		  });
+	  });
+	  
+	  describe('Get webhook by id and status unverified', function() {
+		  it('Should return status code 200', function(done) {
+			  openpay.webhooks.get(webhook.id, function(error, body, response) {
+				  printLog(response.statusCode, body, error);
+		          assert.equal(response.statusCode, 200, '');
+		          assert.equal(body.status, 'unverified', '');
+		          done();
+			  });
+		  });
+	  });
+	  
+	  describe('Verify webhook code', function() {
+		  it('Should return statusCode 204', function(done) {
+			  console.info(webhook.url + '?inspect');
+			  getVerificationCode(webhook.url + '?inspect', function(error, verification_code) {
+				  console.info('webhook.id = ' + webhook.id);
+				  console.info('verification_code = ' + verification_code);
+				  openpay.webhooks.verify(webhook.id, verification_code, function(error, body, response) {
+					  printLog(response.statusCode, body, error);
+			          assert.equal(response.statusCode, 204, '');
+			          done();  
+				  });  
+			  })
+		  });
+	  });
+	 
+	  
+	  describe('Get webhook by id and status verified', function() {
+		  it('Should return status code 200', function(done) {
+			  openpay.webhooks.get(webhook.id, function(error, body, response) {
+				  printLog(response.statusCode, body, error);
+		          assert.equal(response.statusCode, 200, '');
+		          assert.equal(body.status, 'verified', '');
+		          done();
+			  });
+		  });
+	  });
+	  
+	  describe('List webhooks by id merchant', function() {
+		  it('Should return status code 200', function(done) {
+			  openpay.webhooks.list(function(error, body, response) {
+				  printLog(response.statusCode, body, error);
+		          assert.equal(response.statusCode, 200, '');
+		          assert.equal(body.length, 1, '');
+		          done();
+			  });
+		  });
+	  });
+	  
+	  describe('Delete webhook by id', function() {
+		  it('Should return statusCode 204', function(done) {
+			  openpay.webhooks.delete(webhook.id, function(error, body, response) {
+				  printLog(response.statusCode, body, error);
+		          assert.equal(response.statusCode, 204, '');
+		          done();
+			  });
+		  });
+	  });
+	  
+  });
+  
+  
   describe('Testing merchant', function() {
     describe('Get merchant', function(){
       it('should return statusCode 200', function (done){
@@ -801,4 +888,18 @@ function printLog(code, body, error){
     console.log(error);
     console.log(' ');
   }
+}
+
+function getVerificationCode(url, callback) {
+	  request(url, function(err, res, body){
+		    var resCode = res.statusCode;
+		    var error = (resCode!=200 && resCode!=201 && resCode!=204) ? body : null;
+		    var verification_code = null;
+		    console.info('error: ' + error);
+		    if (!error) {
+		    	verification_code = body.toString().substring(body.indexOf('verification_code') + 28 , body.indexOf('verification_code') + 28 + 8);
+		    	console.info('verification_code: ' + verification_code);
+		    }
+		    callback(error, verification_code);
+	  });
 }

@@ -1,7 +1,7 @@
 {
   "name": "openpay",
   "description": "Openpay library",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "dependencies": {
     "underscore": "1.5.x",
     "request": "2.29.x"
