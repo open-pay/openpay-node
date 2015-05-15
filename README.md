@@ -1,4 +1,4 @@
-# Openpay Node.js bindings [![Build Status](https://travis-ci.org/open-pay/openpay-node.png?branch=master)](https://travis-ci.org/open-pay/openpay-node)
+![Openpay nodejs](http://www.openpay.mx/img/github/nodejs.jpg)[![Build Status](https://travis-ci.org/open-pay/openpay-node.png?branch=master)](https://travis-ci.org/open-pay/openpay-node)
 
 ## Installation
 
