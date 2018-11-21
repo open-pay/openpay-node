@@ -9,7 +9,7 @@ openpay.setTimeout(10000);
 
 var enableLogging = true;
 var testCreateCharges = true;
-var testCreatePayouts = true;
+var testCreatePayouts = false;
 var testBankAccountId = 'bmopptj5st1hx8ddouha';
 
 describe('Testing whole API', function(){
@@ -27,8 +27,8 @@ describe('Testing whole API', function(){
 
   describe('Testing Webhook', function() {
 	  var webhook;
-	  var webhook_params = {                                            
-			  'url' : 'http://requestb.in/qozy7dqp',
+	  var webhook_params = {
+			  'url' : 'https://opey-requestbin.herokuapp.com/1m7q8x71',
 			  'event_types' : [
 			    'charge.refunded',
 			    'charge.failed',
@@ -45,21 +45,21 @@ describe('Testing whole API', function(){
 		          assert.equal(response.statusCode, 201, '');
 		          webhook = body;
 		          done();
-		      });  
+		      });
 		  });
 	  });
-	  
-	  describe('Get webhook by id and status unverified', function() {
+
+	  describe('Get webhook by id and status verified', function() {
 		  it('Should return status code 200', function(done) {
 			  openpay.webhooks.get(webhook.id, function(error, body, response) {
 				  printLog(response.statusCode, body, error);
 		          assert.equal(response.statusCode, 200, '');
-		          assert.equal(body.status, 'unverified', '');
+		          assert.equal(body.status, 'verified', '');
 		          done();
 			  });
 		  });
 	  });
-	  
+/*
 	  describe('Verify webhook code', function() {
 		  it('Should return statusCode 204', function(done) {
 			  console.info(webhook.url + '?inspect');
@@ -69,13 +69,14 @@ describe('Testing whole API', function(){
 				  openpay.webhooks.verify(webhook.id, verification_code, function(error, body, response) {
 					  printLog(response.statusCode, body, error);
 			          assert.equal(response.statusCode, 204, '');
-			          done();  
-				  });  
+			          done();
+				  });
 			  })
 		  });
 	  });
-	 
-	  
+*/
+
+
 	  describe('Get webhook by id and status verified', function() {
 		  it('Should return status code 200', function(done) {
 			  openpay.webhooks.get(webhook.id, function(error, body, response) {
@@ -246,7 +247,7 @@ describe('Testing whole API', function(){
 
 
   var testBankAccount = {
-    "clabe":"032180000118359719",
+    "clabe":"021180000118359717",
     "holder_name":"Juan H"
   };
   var newlyCreatedBankAccountId = '';
@@ -621,73 +622,73 @@ describe('Testing whole API', function(){
           });
         });
       });
-    }
 
-    var newlyCreatedCustomerTransactionId = '';
-    describe('Create customer payout with new card', function(){
-      it('should return statusCode 200||201', function (done){
-        openpay.customers.payouts.create(newlyCreatedCustomerId, testCardPayout, function (error, body, response){
-          printLog(response.statusCode, body, error);
-          assert.equal(response.statusCode == 200 || response.statusCode == 201, true, 'Status code == 200');
-          newlyCreatedCustomerTransactionId = body.id;
-          done();
+      var newlyCreatedCustomerTransactionId = '';
+      describe('Create customer payout with new card', function(){
+        it('should return statusCode 200||201', function (done){
+          openpay.customers.payouts.create(newlyCreatedCustomerId, testCardPayout, function (error, body, response){
+            printLog(response.statusCode, body, error);
+            assert.equal(response.statusCode == 200 || response.statusCode == 201, true, 'Status code == 200');
+            newlyCreatedCustomerTransactionId = body.id;
+            done();
+          });
         });
       });
-    });
-    describe('Get all customer payouts without constraints', function(){
-      it('should return statusCode 200', function (done){
-        openpay.customers.payouts.list(newlyCreatedCustomerId, {}, function (error, body, response){
-          printLog(response.statusCode, body, error);
-          assert.equal(response.statusCode, 200, 'Status code == 200');
-          done();
+      describe('Get all customer payouts without constraints', function(){
+        it('should return statusCode 200', function (done){
+          openpay.customers.payouts.list(newlyCreatedCustomerId, {}, function (error, body, response){
+            printLog(response.statusCode, body, error);
+            assert.equal(response.statusCode, 200, 'Status code == 200');
+            done();
+          });
         });
       });
-    });
-    describe('Get customer payout', function(){
-      it('should return statusCode 200', function (done){
-        openpay.customers.payouts.get(newlyCreatedCustomerId, newlyCreatedCustomerTransactionId, function (error, body, response){
-          printLog(response.statusCode, body, error);
-          assert.equal(response.statusCode, 200, '');
-          done();
+      describe('Get customer payout', function(){
+        it('should return statusCode 200', function (done){
+          openpay.customers.payouts.get(newlyCreatedCustomerId, newlyCreatedCustomerTransactionId, function (error, body, response){
+            printLog(response.statusCode, body, error);
+            assert.equal(response.statusCode, 200, '');
+            done();
+          });
         });
       });
-    });
-    describe('Create customer payout with new bank account', function(){
-      it('should return statusCode 200||201', function (done){
-        openpay.customers.payouts.create(newlyCreatedCustomerId, testBankAccountPayout, function (error, body, response){
-          printLog(response.statusCode, body, error);
-          assert.equal(response.statusCode == 200 || response.statusCode == 201, true, 'Status code == 200');
-          newlyCreatedCustomerTransactionId = body.id;
-          done();
+      describe('Create customer payout with new bank account', function(){
+        it('should return statusCode 200||201', function (done){
+          openpay.customers.payouts.create(newlyCreatedCustomerId, testBankAccountPayout, function (error, body, response){
+            printLog(response.statusCode, body, error);
+            assert.equal(response.statusCode == 200 || response.statusCode == 201, true, 'Status code == 200');
+            newlyCreatedCustomerTransactionId = body.id;
+            done();
+          });
         });
       });
-    });
-    var testExistingItemPayout = {
-      "method": "card",
-      "destination_id": "",
-      "amount": 1.50,
-      "description": "Test existing item payout"
-    };
-    describe('Create customer payout with existing card', function(){
-      it('should return statusCode 200||201', function (done){
-        testExistingItemPayout.destination_id = newlyCreatedCustomerCardId;
-        openpay.customers.payouts.create(newlyCreatedCustomerId, testExistingItemPayout, function (error, body, response){
-          printLog(response.statusCode, body, error);
-          assert.equal(response.statusCode == 200 || response.statusCode == 201, true, 'Status code == 200');
-          done();
+      var testExistingItemPayout = {
+        "method": "card",
+        "destination_id": "",
+        "amount": 1.50,
+        "description": "Test existing item payout"
+      };
+      describe('Create customer payout with existing card', function(){
+        it('should return statusCode 200||201', function (done){
+          testExistingItemPayout.destination_id = newlyCreatedCustomerCardId;
+          openpay.customers.payouts.create(newlyCreatedCustomerId, testExistingItemPayout, function (error, body, response){
+            printLog(response.statusCode, body, error);
+            assert.equal(response.statusCode == 200 || response.statusCode == 201, true, 'Status code == 200');
+            done();
+          });
         });
       });
-    });
-    describe('Create customer payout with existing bank account', function(){
-      it('should return statusCode 200||201', function (done){
-        testExistingItemPayout.destination_id = newlyCreatedBankAccountId;
-        openpay.customers.payouts.create(newlyCreatedCustomerId, testExistingItemPayout, function (error, body, response){
-          printLog(response.statusCode, body, error);
-          assert.equal(response.statusCode == 200 || response.statusCode == 201, true, 'Status code == 200');
-          done();
+      describe('Create customer payout with existing bank account', function(){
+        it('should return statusCode 200||201', function (done){
+          testExistingItemPayout.destination_id = newlyCreatedBankAccountId;
+          openpay.customers.payouts.create(newlyCreatedCustomerId, testExistingItemPayout, function (error, body, response){
+            printLog(response.statusCode, body, error);
+            assert.equal(response.statusCode == 200 || response.statusCode == 201, true, 'Status code == 200');
+            done();
+          });
         });
       });
-    });
+    }
   });
 
 
