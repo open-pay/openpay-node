@@ -28,7 +28,7 @@ describe('Testing whole API', function(){
   describe('Testing Webhook', function() {
 	  var webhook;
 	  var webhook_params = {
-			  'url' : 'https://opey-requestbin.herokuapp.com/1m7q8x71',
+			  'url' : 'https://opey-requestbin.herokuapp.com/1h3ndxb1',
 			  'event_types' : [
 			    'charge.refunded',
 			    'charge.failed',
