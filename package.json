@@ -8,7 +8,7 @@
   },
   "main": "lib/openpay.js",
   "devDependencies": {
-    "mocha": "~1.13.0"
+    "mocha": "^7.0.1"
   },
   "scripts": {
     "test": "mocha"
