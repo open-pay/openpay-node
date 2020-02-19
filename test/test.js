@@ -28,7 +28,7 @@ describe('Testing whole API', function(){
   describe('Testing Webhook', function() {
 	  var webhook;
 	  var webhook_params = {
-			  'url' : 'https://opey-requestbin.herokuapp.com/1h3ndxb1',
+			  'url' : 'https://opey-requestbin.herokuapp.com/wkudygwk',
 			  'event_types' : [
 			    'charge.refunded',
 			    'charge.failed',
@@ -810,7 +810,7 @@ describe('Testing whole API', function(){
     });
     describe('Update subscription', function(){
       it('should return statusCode 200', function (done){
-        openpay.customers.subscriptions.update(newlyCreatedCustomerId, newlyCreatedSubscriptionId, {"trial_end_date": "2020-02-11"}, function (error, body, response){
+        openpay.customers.subscriptions.update(newlyCreatedCustomerId, newlyCreatedSubscriptionId, {"trial_end_date": "2021-02-11"}, function (error, body, response){
           printLog(response.statusCode, body, error);
           assert.equal(response.statusCode, 200, '');
           done();

@@ -3,7 +3,7 @@
   "description": "Openpay library",
   "version": "1.0.4",
   "dependencies": {
-    "request": "^2.88.0",
+    "request": "^2.88.2",
     "underscore": "1.5.x"
   },
   "main": "lib/openpay.js",

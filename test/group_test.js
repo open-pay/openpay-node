@@ -276,7 +276,7 @@ describe('Testing group API', function(){
     });
     describe('Update subscription', function(){
       it('should return statusCode 200', function (done){
-        openpay.groups.customers.subscriptions.update(merchantId, newlyCreatedCustomerId, newlyCreatedSubscriptionId, {"trial_end_date": "2020-02-11"}, function (error, body, response){
+        openpay.groups.customers.subscriptions.update(merchantId, newlyCreatedCustomerId, newlyCreatedSubscriptionId, {"trial_end_date": "2022-02-11"}, function (error, body, response){
           printLog(response.statusCode, body, error);
           assert.equal(response.statusCode, 200, '');
           done();
