@@ -27,7 +27,9 @@ describe('Testing whole API', function(){
 
   var testCreateCustomer = {
     "name":"Juan",
-    "email":"juan@nonexistantdomain.com"
+    "email":"juan@nonexistantdomain.com",
+    // The customer requires an account to charge fees and receive transfers
+    "requires_account": true
   };
   var testUpdateCustomer = {
     "name":"Juan",
