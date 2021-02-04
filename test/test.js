@@ -22,6 +22,9 @@ var testBankAccountId = 'bmopptj5st1hx8ddouha';
 // in both comments, here and down below.
 // (There should be a better way to do this)
 
+// Defining a valid expiration year for cards, adding 5 years to the current one
+var validExpirationYear = (new Date().getFullYear() + 5).toString().substr(2, 2);
+
 describe('Testing whole API', function(){
   this.timeout(0);
 
@@ -191,7 +194,7 @@ describe('Testing whole API', function(){
   var testCard ={
     "card_number":"4111111111111111",
     "holder_name":"Juan Perez",
-    "expiration_year":"20",
+    "expiration_year": validExpirationYear,
     "expiration_month":"12",
     "cvv2":"111"
   };
@@ -309,7 +312,7 @@ describe('Testing whole API', function(){
     "card": {
       "card_number": "4111111111111111",
       "holder_name": "Aa Bb",
-      "expiration_year": "20",
+      "expiration_year": validExpirationYear,
       "expiration_month": "12",
       "cvv2": "110",
     },
@@ -321,7 +324,7 @@ describe('Testing whole API', function(){
     "card": {
       "card_number": "4111111111111111",
       "holder_name": "Aa Bb",
-      "expiration_year": "20",
+      "expiration_year": validExpirationYear,
       "expiration_month": "12",
       "cvv2": "110",
     },
