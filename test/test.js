@@ -38,7 +38,8 @@ describe('Testing whole API', function(){
   describe('Testing Webhook', function() {
 	  var webhook;
 	  var webhook_params = {
-			  'url' : 'https://opey-requestbin.herokuapp.com/wkudygwk',
+        // Update the requestbin url here. Last change: Feb 3, 2021
+			  'url' : 'https://opey-requestbin.herokuapp.com/12i2q011',
 			  'event_types' : [
 			    'charge.refunded',
 			    'charge.failed',
