@@ -12,6 +12,16 @@ var testCreateCharges = true;
 var testCreatePayouts = false;
 var testBankAccountId = 'bmopptj5st1hx8ddouha';
 
+// IMPORTANT NOTE ABOUT WEBHOOKS
+// !! Future contributors, please read: !!
+//
+// The webhook url requires opening a new requestbin in https://opey-requestbin.herokuapp.com
+// and entering the id as a parameter further down; otherwise the webhook check will fail.
+// The current one will remain open for 60 days, according to the docs (starting Feb 3, 2021)
+// If you test again after 60 days have passed, please update the url and the date 
+// in both comments, here and down below.
+// (There should be a better way to do this)
+
 describe('Testing whole API', function(){
   this.timeout(0);
 
