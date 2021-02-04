@@ -1,6 +1,5 @@
 var assert = require('assert');
 var _ = require('underscore');
-// var request = require('request');
 var urllib = require('urllib');
 
 var Openpay = require('../lib/openpay');
@@ -904,15 +903,4 @@ function getVerificationCode(url, callback) {
     }
     callback(error, verification_code);
   });
-	  // request(url, function(err, res, body){
-		//     var resCode = res.statusCode;
-		//     var error = (resCode!=200 && resCode!=201 && resCode!=204) ? body : null;
-		//     var verification_code = null;
-		//     console.info('error: ' + error);
-		//     if (!error) {
-		//     	verification_code = body.toString().substring(body.indexOf('verification_code') + 28 , body.indexOf('verification_code') + 28 + 8);
-		//     	console.info('verification_code: ' + verification_code);
-		//     }
-		//     callback(error, verification_code);
-	  // });
 }
