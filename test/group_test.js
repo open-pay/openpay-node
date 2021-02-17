@@ -1,6 +1,7 @@
 var assert = require('assert');
 var _ = require('underscore');
-var request = require('request');
+// var request = require('request');
+var urllib = require('urllib');
 
 var Openpay = require('../lib/openpay');
 /*Sandbox*/
@@ -9,6 +10,9 @@ openpay.setTimeout(10000);
 
 var enableLogging = true;
 var testCreateCharges = true;
+
+// Defining a valid expiration year for cards, adding 5 years to the current one
+var validExpirationYear = (new Date().getFullYear() + 5).toString().substr(2, 2);
 
 describe('Testing group API', function(){
   this.timeout(0);
@@ -77,7 +81,7 @@ describe('Testing group API', function(){
   var testCard ={
     "card_number":"4111111111111111",
     "holder_name":"Juan Perez",
-    "expiration_year":"20",
+    "expiration_year": validExpirationYear,
     "expiration_month":"12",
     "cvv2":"111"
   };
@@ -130,7 +134,7 @@ describe('Testing group API', function(){
     "card": {
       "card_number": "4111111111111111",
       "holder_name": "Aa Bb",
-      "expiration_year": "20",
+      "expiration_year": validExpirationYear,
       "expiration_month": "12",
       "cvv2": "110",
     },
@@ -142,7 +146,7 @@ describe('Testing group API', function(){
     "card": {
       "card_number": "4111111111111111",
       "holder_name": "Aa Bb",
-      "expiration_year": "20",
+      "expiration_year": validExpirationYear,
       "expiration_month": "12",
       "cvv2": "110",
     },
@@ -347,15 +351,15 @@ function printLog(code, body, error){
 }
 
 function getVerificationCode(url, callback) {
-	  request(url, function(err, res, body){
-		    var resCode = res.statusCode;
-		    var error = (resCode!=200 && resCode!=201 && resCode!=204) ? body : null;
-		    var verification_code = null;
-		    console.info('error: ' + error);
-		    if (!error) {
-		    	verification_code = body.toString().substring(body.indexOf('verification_code') + 28 , body.indexOf('verification_code') + 28 + 8);
-		    	console.info('verification_code: ' + verification_code);
-		    }
-		    callback(error, verification_code);
-	  });
+  urllib.request(url, function(err, body, res){
+    var resCode = res.statusCode;
+    var error = (resCode!=200 && resCode!=201 && resCode!=204) ? body : null;
+    var verification_code = null;
+    console.info('error: ' + error);
+    if (!error) {
+      verification_code = body.toString().substring(body.indexOf('verification_code') + 28 , body.indexOf('verification_code') + 28 + 8);
+      console.info('verification_code: ' + verification_code);
+    }
+    callback(error, verification_code);
+  });
 }
