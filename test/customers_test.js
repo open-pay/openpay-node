@@ -11,6 +11,7 @@ describe('Get customers list with creation[gte] filter', () => {
     it('should return customer list and 200 status code', (done) => {
         var searchParams = {
             'creation[lte]': '2021-01-01',
+            'limit':5
         };
         openpay.groups.customers.list(searchParams, function (error, body, response) {
             printLog(response.statusCode, body, error);

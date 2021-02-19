@@ -14,6 +14,7 @@ describe('Get all subscriptions with creation filter', function () {
     it('should return statusCode 200', function (done) {
         var searchParams = {
             'creation[lte]': '2021-01-01',
+            'limit':5
         };
         openpay.customers.create(testCreateCustomer, function (error, body) {
             openpay.customers.subscriptions.list(body.id, searchParams, function (error, body, response) {

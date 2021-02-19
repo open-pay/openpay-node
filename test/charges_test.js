@@ -12,6 +12,7 @@ describe('Get charges list with amount[lte] filter', () => {
         var searchParams = {
             'amount[lte]': 1000,
             'creation[lte]': '2021-01-01',
+            'limit':5
         };
         openpay.charges.list(searchParams, function (error, body, response) {
             printLog(response.statusCode, body, error);

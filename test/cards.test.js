@@ -11,6 +11,7 @@ describe('Get cards list with creation[lte] filter', () => {
     it('should return cards list and 200 status code', (done) => {
         var searchParams = {
             'creation[lte]': '2021-01-01',
+            'limit':5
         };
         openpay.cards.list(searchParams, function (error, body, response) {
             printLog(response.statusCode, body, error);

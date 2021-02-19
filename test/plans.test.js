@@ -11,6 +11,7 @@ describe('Get plans list with creation[lte] filter', () => {
     it('should return plans list and 200 status code', (done) => {
         var searchParams = {
             'creation[lte]': '2021-01-01',
+            'limit':5
         };
         openpay.plans.list(searchParams, function (error, body, response) {
             printLog(response.statusCode, body, error);

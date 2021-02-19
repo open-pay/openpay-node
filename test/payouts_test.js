@@ -12,6 +12,7 @@ describe('Get all payouts with filters creation and amount', function(){
         var searchParams = {
             'amount[lte]': 1000,
             'creation[lte]': '2020-01-01',
+            'limit':5
         };
         openpay.payouts.list(searchParams, function (error, body, response){
             printLog(response.statusCode, body, error);
