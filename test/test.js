@@ -1,6 +1,6 @@
 var assert = require('assert');
 var _ = require('underscore');
-var request = require('request');
+var urllib = require('urllib');
 
 var Openpay = require('../lib/openpay');
 /*Sandbox*/
@@ -12,42 +12,58 @@ var testCreateCharges = true;
 var testCreatePayouts = false;
 var testBankAccountId = 'bmopptj5st1hx8ddouha';
 
-describe('Testing whole API', function () {
-    this.timeout(0);
+// IMPORTANT NOTE ABOUT WEBHOOKS
+// !! Future contributors, please read: !!
+//
+// The webhook url requires opening a new requestbin in https://opey-requestbin.herokuapp.com
+// and entering the id as a parameter further down; otherwise the webhook check will fail.
+// The current one will remain open for 60 days, according to the docs (starting Feb 3, 2021)
+// If you test again after 60 days have passed, please update the url and the date
+// in both comments, here and down below.
+// (There should be a better way to do this)
 
-    var testCreateCustomer = {
-        "name": "Juan",
-        "email": "juan@nonexistantdomain.com"
-    };
-    var testUpdateCustomer = {
-        "name": "Juan",
-        "email": "juan@nonexistantdomain.com",
-        "phone_number": "123456789"
-    };
+// Defining a valid expiration year for cards, adding 5 years to the current one
+var validExpirationYear = (new Date().getFullYear() + 5).toString().substr(2, 2);
 
-    describe('Testing Webhook', function () {
-        var webhook;
-        var webhook_params = {
-            'url': 'https://opey-requestbin.herokuapp.com/wkudygwk',
-            'event_types': [
-                'charge.refunded',
-                'charge.failed',
-                'charge.cancelled',
-                'charge.created',
-                'chargeback.accepted'
-            ]
-        };
+describe('Testing whole API', function(){
+  this.timeout(0);
 
-        describe('Create Webhook', function () {
-            it('Should return statusCode 201', function (done) {
-                openpay.webhooks.create(webhook_params, function (error, body, response) {
-                    printLog(response.statusCode, body, error);
-                    assert.equal(response.statusCode, 201, '');
-                    webhook = body;
-                    done();
-                });
-            });
-        });
+  var testCreateCustomer = {
+    "name":"Juan",
+    "email":"juan@nonexistantdomain.com",
+    // The customer requires an account to charge fees and receive transfers
+    "requires_account": true
+  };
+  var testUpdateCustomer = {
+    "name":"Juan",
+    "email":"juan@nonexistantdomain.com",
+    "phone_number":"123456789"
+  };
+
+  describe('Testing Webhook', function() {
+	  var webhook;
+	  var webhook_params = {
+        // Update the requestbin url here. Last change: Feb 3, 2021
+			  'url' : 'https://opey-requestbin.herokuapp.com/12i2q011',
+			  'event_types' : [
+			    'charge.refunded',
+			    'charge.failed',
+			    'charge.cancelled',
+			    'charge.created',
+			    'chargeback.accepted'
+			  ]
+	  };
+	  
+	  describe('Create Webhook', function() {
+		  it('Should return statusCode 201', function(done) {
+			  openpay.webhooks.create(webhook_params, function (error, body, response){
+		          printLog(response.statusCode, body, error);
+		          assert.equal(response.statusCode, 201, '');
+		          webhook = body;
+		          done();
+		      });
+		  });
+	  });
 
         describe('Get webhook by id and status verified', function () {
             it('Should return status code 200', function (done) {
@@ -175,15 +191,15 @@ describe('Testing whole API', function () {
     });
 
 
-    var testCard = {
-        "card_number": "4111111111111111",
-        "holder_name": "Juan Perez",
-        "expiration_year": "20",
-        "expiration_month": "12",
-        "cvv2": "111"
-    };
-    var newlyCreatedCardId = '';
-    var newlyCreatedCustomerCardId = '';
+  var testCard ={
+    "card_number":"4111111111111111",
+    "holder_name":"Juan Perez",
+    "expiration_year": validExpirationYear,
+    "expiration_month":"12",
+    "cvv2":"111"
+  };
+  var newlyCreatedCardId = '';
+  var newlyCreatedCustomerCardId = '';
 
     describe('Testing cards API', function () {
         describe('Add card', function () {
@@ -284,49 +300,49 @@ describe('Testing whole API', function () {
     });
 
 
-    //var testGetCharge = 'tlogyahn68d2qurjqhqt';
-    var testExistingCardCharge = {
-        "source_id": '',
-        "method": "card",
-        "amount": 50,
-        "description": "Test existing card charge"
-    };
-    var testCreateCharge = {
-        "method": "card",
-        "card": {
-            "card_number": "4111111111111111",
-            "holder_name": "Aa Bb",
-            "expiration_year": "20",
-            "expiration_month": "12",
-            "cvv2": "110",
-        },
-        "amount": 20,
-        "description": "Test Charge"
-    };
-    var testCreateChargeWithoutCapture = {
-        "method": "card",
-        "card": {
-            "card_number": "4111111111111111",
-            "holder_name": "Aa Bb",
-            "expiration_year": "20",
-            "expiration_month": "12",
-            "cvv2": "110",
-        },
-        "amount": 20,
-        "description": "Test Charge",
-        "capture": false
-    };
-    var testCreateBankAccountCharge = {
-        "method": "bank_account",
-        "amount": 50,
-        "description": "Test bank account charge"
-    };
-    var testCreateStoreCharge = {
-        "method": "store",
-        "amount": 60.01,
-        "description": "Test store charge"
-    };
-    var testRefundData = {"description": "Testing refund"};
+  //var testGetCharge = 'tlogyahn68d2qurjqhqt';
+  var testExistingCardCharge = {
+    "source_id" : '',
+    "method" : "card",
+    "amount" : 50,
+    "description" : "Test existing card charge"
+  };
+  var testCreateCharge = {
+    "method": "card",
+    "card": {
+      "card_number": "4111111111111111",
+      "holder_name": "Aa Bb",
+      "expiration_year": validExpirationYear,
+      "expiration_month": "12",
+      "cvv2": "110",
+    },
+    "amount" : 20,
+    "description" : "Test Charge"
+  };
+  var testCreateChargeWithoutCapture = {
+    "method": "card",
+    "card": {
+      "card_number": "4111111111111111",
+      "holder_name": "Aa Bb",
+      "expiration_year": validExpirationYear,
+      "expiration_month": "12",
+      "cvv2": "110",
+    },
+    "amount" : 20,
+    "description" : "Test Charge",
+    "capture" : false
+  };
+  var testCreateBankAccountCharge = {
+    "method" : "bank_account",
+    "amount" : 50,
+    "description" : "Test bank account charge"
+  };
+  var testCreateStoreCharge = {
+    "method" : "store",
+    "amount" : 60.01,
+    "description" : "Test store charge"
+  };
+  var testRefundData = {"description":"Testing refund"};
 
     describe('Testing charges', function () {
         describe('Get all charges without constraints', function () {
@@ -897,15 +913,15 @@ function printLog(code, body, error) {
 }
 
 function getVerificationCode(url, callback) {
-    request(url, function (err, res, body) {
-        var resCode = res.statusCode;
-        var error = (resCode != 200 && resCode != 201 && resCode != 204) ? body : null;
-        var verification_code = null;
-        console.info('error: ' + error);
-        if (!error) {
-            verification_code = body.toString().substring(body.indexOf('verification_code') + 28, body.indexOf('verification_code') + 28 + 8);
-            console.info('verification_code: ' + verification_code);
-        }
-        callback(error, verification_code);
-    });
+  urllib.request(url, function(err, body, res){
+    var resCode = res.statusCode;
+    var error = (resCode!=200 && resCode!=201 && resCode!=204) ? body : null;
+    var verification_code = null;
+    console.info('error: ' + error);
+    if (!error) {
+      verification_code = body.toString().substring(body.indexOf('verification_code') + 28 , body.indexOf('verification_code') + 28 + 8);
+      console.info('verification_code: ' + verification_code);
+    }
+    callback(error, verification_code);
+  });
 }
