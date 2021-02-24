@@ -15,6 +15,7 @@ describe('Get all bank_account with creation filter', function () {
     it('should return statusCode 200', function (done) {
         var searchParams = {
             'creation[lte]': '2021-01-01',
+            'limit':1
         };
         openpay.customers.create(testCreateCustomer, function (error, body) {
             openpay.customers.bankaccounts.list(body.id, searchParams, function (error, body, response) {
