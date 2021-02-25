@@ -7,9 +7,9 @@ var openpay = new Openpay('m1qp3av1ymcfufkuuoah', 'sk_ed05f1de65fa4a67a3d3056a4e
 openpay.setTimeout(30000);
 var enableLogging = true;
 
-describe('Get charges list with amount[lte] filter', () => {
+describe('Get charges list with amount[lte] filter', function () {
     this.timeout(0);
-    it('should return charges list and 200 status code', (done) => {
+    it('should return charges list and 200 status code', function(done) {
         var searchParams = {
             'amount[lte]': 10000,
             'creation[gte]': '2021-01-01',

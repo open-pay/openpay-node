@@ -7,12 +7,12 @@ var openpay = new Openpay('m1qp3av1ymcfufkuuoah', 'sk_ed05f1de65fa4a67a3d3056a4e
 openpay.setTimeout(30000);
 var enableLogging = true;
 
-describe('Get cards list with creation[lte] filter', () => {
+describe('Get cards list with creation[lte] filter', function () {
     this.timeout(0);
-    it('should return cards list and 200 status code', (done) => {
+    it('should return cards list and 200 status code', function (done) {
         var searchParams = {
             'creation[gte]': '2021-01-01',
-            'limit':1
+            'limit': 1
         };
         openpay.cards.list(searchParams, function (error, body, response) {
             printLog(response.statusCode, body, error);
@@ -22,11 +22,11 @@ describe('Get cards list with creation[lte] filter', () => {
     })
 })
 
-function printLog(code, body, error){
-    if(enableLogging){
+function printLog(code, body, error) {
+    if (enableLogging) {
         console.log(code, _.isUndefined(body) || _.isNull(body) ? '' : _.isArray(body) ? _.pluck(body, 'id') : body.id);
     }
-    if(code>=300){
+    if (code >= 300) {
         console.log(' ');
         console.log(error);
         console.log(' ');

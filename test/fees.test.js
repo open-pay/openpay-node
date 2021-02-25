@@ -7,9 +7,9 @@ var openpay = new Openpay('m1qp3av1ymcfufkuuoah', 'sk_ed05f1de65fa4a67a3d3056a4e
 openpay.setTimeout(2000);
 var enableLogging = true;
 
-describe('Get fees list with creation[lte] filter', () => {
+describe('Get fees list with creation[lte] filter', function() {
     this.timeout(0);
-    it('should return fees list and 200 status code', (done) => {
+    it('should return fees list and 200 status code', function(done) {
         var searchParams = {
             'creation[gte]': '2021-01-01',
             'limit':1

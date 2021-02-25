@@ -7,9 +7,9 @@ var openpay = new Openpay('gdntnaxvkcdviesgaxem', 'sk_b97e606487d34b44ab66e03d5b
 openpay.setTimeout(10000);
 var enableLogging = true;
 
-describe('Get customers list with creation[gte] filter', () => {
+describe('Get customers list with creation[gte] filter', function()  {
     this.timeout(0);
-    it('should return customer list and 200 status code', (done) => {
+    it('should return customer list and 200 status code', function(done) {
         var searchParams = {
             'creation[gte]': '2021-01-01',
             'limit':1
