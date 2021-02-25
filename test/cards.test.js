@@ -8,6 +8,7 @@ openpay.setTimeout(30000);
 var enableLogging = true;
 
 describe('Get cards list with creation[lte] filter', () => {
+    this.timeout(0);
     it('should return cards list and 200 status code', (done) => {
         var searchParams = {
             'creation[gte]': '2021-01-01',

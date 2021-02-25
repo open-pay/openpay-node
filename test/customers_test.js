@@ -8,6 +8,7 @@ openpay.setTimeout(10000);
 var enableLogging = true;
 
 describe('Get customers list with creation[gte] filter', () => {
+    this.timeout(0);
     it('should return customer list and 200 status code', (done) => {
         var searchParams = {
             'creation[gte]': '2021-01-01',

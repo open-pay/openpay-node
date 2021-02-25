@@ -8,6 +8,7 @@ openpay.setTimeout(20000);
 var enableLogging = true;
 
 describe('Get plans list with creation[lte] filter', () => {
+    this.timeout(0);
     it('should return plans list and 200 status code', (done) => {
         var searchParams = {
             'creation[gte]': '2021-01-01',
