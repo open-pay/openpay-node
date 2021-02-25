@@ -8,6 +8,7 @@ openpay.setTimeout(20000);
 var enableLogging = true;
 
 describe('Get all payouts with filters creation and amount', function(){
+    this.timeout(0);
     it('should return statusCode 200', function (done){
         var searchParams = {
             'amount[lte]': 1000,

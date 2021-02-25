@@ -8,6 +8,7 @@ openpay.setTimeout(30000);
 var enableLogging = true;
 
 describe('Get charges list with amount[lte] filter', () => {
+    this.timeout(0);
     it('should return charges list and 200 status code', (done) => {
         var searchParams = {
             'amount[lte]': 10000,

@@ -11,6 +11,7 @@ var testCreateCustomer = {
 };
 
 describe('Get all subscriptions with creation filter', function () {
+    this.timeout(0);
     it('should return statusCode 200', function (done) {
         var searchParams = {
             'creation[gte]': '2021-01-01',
