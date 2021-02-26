@@ -121,7 +121,6 @@ describe('Testing group API', function(){
     });
   });
 
-
   //var testGetCharge = 'tlogyahn68d2qurjqhqt';
   var testExistingCardCharge = {
     "source_id" : '',
@@ -245,7 +244,6 @@ describe('Testing group API', function(){
       });
     });
   });
-
   describe('Testing subscriptions', function(){
     newlyCreatedPlanId = 'pdusfyuqsdze2sejn7qy';
     var newlyCreatedSubscriptionId = '';
@@ -297,7 +295,6 @@ describe('Testing group API', function(){
       });
     });
   });
-
   describe('Create and delete customer', function(){
     it('should return statusCode 200||201', function (done){
       openpay.groups.customers.create(testCreateCustomer, function (error, body, response){
@@ -325,7 +322,6 @@ describe('Testing group API', function(){
       });
     });
   });
-
   describe('Delete customer', function(){
     it('should return statusCode 204', function (done){
       openpay.groups.customers.delete(newlyCreatedCustomerId, function (error, body, response){
