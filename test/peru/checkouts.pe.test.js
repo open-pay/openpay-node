@@ -7,14 +7,6 @@ var openpay = new Openpay('m3cji4ughukthjcsglv0', 'sk_f934dfe51645483e82106301d9
 openpay.setTimeout(30000);
 var enableLogging = true;
 
-const card = {
-    "holder_name": "DinnersClub",
-    "card_number": "4111111111111111",
-    "cvv2": "651",
-    "expiration_month": "09",
-    "expiration_year": "25"
-};
-
 const customer = {
     "name": "Marco",
     "last_name": "Morales Perez",
