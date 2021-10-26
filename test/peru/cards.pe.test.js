@@ -35,7 +35,7 @@ describe('Get cards list with creation[lte] filter', function () {
     this.timeout(0);
     it('should return cards list and 200 status code', function (done) {
         var searchParams = {
-            'creation[gte]': '2021-01-01',
+            'creation[lte]': '2021-01-01',
             'limit': 1
         };
         openpay.cards.list(searchParams, function (error, body, response) {
