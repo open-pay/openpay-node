@@ -7,7 +7,7 @@ var openpay = new Openpay('m3cji4ughukthjcsglv0', 'sk_f934dfe51645483e82106301d9
 openpay.setTimeout(30000);
 var enableLogging = true;
 const webhook = {
-    "url": "https://webhook.site/dffe8335-b0bb-493f-a38d-3e61b711bd6a",
+    "url": "https://webhook.site/dffe8335-b0bb-493f-a38d-3e61b711bd6a", // Cambiar por URL válida
     "user": "juanito",
     "password": "passjuanito",
     "event_types": [
@@ -17,28 +17,6 @@ const webhook = {
         "chargeback.accepted"
     ]
 }
-const card = {
-    "holder_name": "DinnersClub",
-    "card_number": "4111111111111111",
-    "cvv2": "651",
-    "expiration_month": "09",
-    "expiration_year": "25"
-};
-const customer = {
-    "name": "Marco",
-    "last_name": "Morales Perez",
-    "email": "marco.mp@qrsof.com",
-    "phone_number": "5744484951",
-    "address": {
-        "country_code": "PE",
-        "postal_code": "12345",
-        "city": "Lima",
-        "state": "Lima",
-        "line1": "Perú",
-        "line2": "Perú",
-        "line3": "Perú"
-    }
-};
 
 describe('Create Webhooks', function () {
     this.timeout(0);
