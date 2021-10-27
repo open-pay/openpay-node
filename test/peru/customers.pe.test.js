@@ -3,7 +3,7 @@ var _ = require('underscore');
 
 var Openpay = require('../../lib/openpay');
 /*Sandbox*/
-var openpay = new Openpay('m3cji4ughukthjcsglv0', 'sk_f934dfe51645483e82106301d985a4f6', false, 'pe');
+var openpay = new Openpay('m3cji4ughukthjcsglv0', 'sk_f934dfe51645483e82106301d985a4f6', 'pe',false);
 openpay.setTimeout(10000);
 var enableLogging = true;
 const customer = {
