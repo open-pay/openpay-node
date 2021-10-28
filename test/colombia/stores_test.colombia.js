@@ -18,6 +18,7 @@ describe('List stores', function () {
     it('List stores by location', function (done) {
         openpay.stores.list(location, function (error, body, response) {
             printLog(response.statusCode, body, error);
+
             assert.equal(response.statusCode === 200 || response.statusCode === 201, true, '');
             done();
         });
