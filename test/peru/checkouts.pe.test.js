@@ -52,7 +52,12 @@ describe('List checkouts', function () {
     this.timeout(0);
     describe('List merchant checkouts', function () {
         it('should return checkout list and 200 status code', function (done) {
-            openpay.checkouts.list(function (error, body, response) {
+            const searchParams = {
+                "limit": 2,
+                "startDate": "20211001",
+                "endDate": "20211011"
+            };
+            openpay.checkouts.list(searchParams, function (error, body, response) {
                 printLog(response.statusCode, body, error);
                 assert.equal(response.statusCode, 200, '');
                 done();
