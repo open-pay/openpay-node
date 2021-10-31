@@ -1272,7 +1272,6 @@ openpay.customers.list(
     });
 ```
 Instead of the 'creation' field in the 'searchParams' object, you can use:
-
 * "creation[gte]" : "2021-10-22" to find customers created after the given date
 * "creation[lte]" : "2021-10-22" to find customers created before the given date
 ### Cards
@@ -1378,7 +1377,150 @@ openpay.cards.delete(
         // ...
     });
 ```
-### Tokens
-
+#### List cards
+###### With customer
+```js
+var customerId = 'Customer ID';
+var searchParams = {
+    'creation': '2021-01-01', // Format yyyy-mm-dd
+    'offset': 10,
+    'limit': 1
+};
+openpay.customers.cards.list(
+    customerId,
+    searchParams,
+    function (error, body, response) {
+        // ...
+    });
+```
+###### Without customer
+```js
+var searchParams = {
+    'creation': '2021-01-01', // Format yyyy-mm-dd
+    'offset': 10,
+    'limit': 1
+};
+openpay.cards.list(
+    searchParams,
+    function (error, body, response) {
+        // ...
+    });
+```
+Instead of the 'creation' field in the 'searchParams' object, you can use:
+* "creation[gte]" : "2021-10-22" to find cards created after the given date
+* "creation[lte]" : "2021-10-22" to find cards created before the given date
+#### Update a card
+###### With customer
+```js
+var customerId = 'Customer ID';
+var cardId = 'Card ID';
+var newData = {
+    'holder_name': 'New Holder Name',
+    'cvv2': '123',
+    'expiration_month': '12',
+    'expiration_year': '25',
+    'merchant_id': 'Merchan ID'
+}
+openpay.customers.cards.update(
+    customerId,
+    cardId,
+    newData,
+    function (error, body, response) {
+        // ...
+    });
+```
+###### Without customer
+```js
+var cardId = 'Card ID';
+var newData = {
+    'holder_name': 'New Holder Name',
+    'cvv2': '123',
+    'expiration_month': '12',
+    'expiration_year': '25',
+    'merchant_id': 'Merchan ID'
+}
+openpay.cards.update(
+    cardId,
+    newData,
+    function (error, body, response) {
+        // ...
+    });
+```
 ### Webhooks
-
+#### Create a webhook
+```js
+var webhook = {
+    "url": "https://mysite.com/myWebhook",
+    "user": "juanito",
+    "password": "passjuanito",
+    "event_types": [
+        "charge.failed",
+        "charge.cancelled",
+        "charge.created",
+        "chargeback.accepted"
+    ]
+}
+openpay.webhooks.create(webhook, function (error, body, response) {
+            printLog(response.statusCode, body, error);
+            assert.equal(response.statusCode, 201, '');
+            done();
+        });
+```
+#### Get a webhook
+```js
+var webhookId = 'Webhook ID';
+openpay.webhooks.get(webhookId,
+    function (error, body, response) {
+        // ...
+    });
+```
+#### Delete a webhook
+```js
+var webhookId = 'Webhook ID';
+openpay.webhooks.delete(
+    webhookId,
+    function (error, body, response) {
+        // ...
+    });
+```
+#### List webhooks
+```js
+openpay.webhooks.list(
+    function (error, body, response) {
+        // ...
+    });
+```
+### Tokens
+#### Create a token
+```js
+const newToken = {
+    "card_number": "4111111111111111",
+    "holder_name": "Juan Perez Ramirez",
+    "expiration_year": "21",
+    "expiration_month": "12",
+    "cvv2": "110",
+    "address": {
+        "city": "Lima",
+        "country_code": "PE",
+        "postal_code": "110511",
+        "line1": "Av 5 de Febrero",
+        "line2": "Roble 207",
+        "line3": "col carrillo",
+        "state": "Lima"
+    }
+}
+openpay.tokens.create(
+    newToken,
+    function (error, body, response) {
+        // ...
+    });
+```
+#### Get a token
+```js
+var tokenId = 'Token ID';
+openpay.tokens.get(
+    tokenId,
+    function (error, body, response) {
+        // ...
+    });
+```
