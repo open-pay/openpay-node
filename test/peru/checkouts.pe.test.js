@@ -108,25 +108,6 @@ describe('Get checkouts', function () {
             });
         });
     });
-
-    describe('get customer checkouts', function () {
-        it('should return customer checkouts list', function () {
-            openpay.customers.list({}, function (error, body, response) {
-                const customer = response.data[0];
-                console.log('response', response.data[0]);
-                openpay.customers.checkouts.create(customer.id, customerCheckout, function (error, body, reponse) {
-                    printLog(response.statusCode, body, error);
-                    const checkout = response.data;
-                    openpay.customers.checkouts.get(customer.id, checkout.id, function (error, body, response) {
-                        printLog(response.statusCode, body, error);
-                        assert.equal(response.statusCode, 200, '');
-                        assert.equal(response.data.id, checkout.id, '')
-                        done();
-                    });
-                })
-            });
-        });
-    });
 });
 
 describe('Update checkouts', function () {

@@ -1170,21 +1170,9 @@ Allowed statuses:
 * other
 
 #### Get checkout
-###### Without customer
 ```js
 var checkoutId = 'Checkout ID';
 openpay.checkouts.get(
-    checkoutId,
-    function (error, body, response) {
-        // ...
-    });
-```
-###### With customer
-```js
-var customerId = 'Customer ID';
-var checkoutId = 'Checkout ID';
-openpay.customers.checkouts.get(
-    customerId,
     checkoutId,
     function (error, body, response) {
         // ...
@@ -1409,43 +1397,6 @@ openpay.cards.list(
 Instead of the 'creation' field in the 'searchParams' object, you can use:
 * "creation[gte]" : "2021-10-22" to find cards created after the given date
 * "creation[lte]" : "2021-10-22" to find cards created before the given date
-#### Update a card
-###### With customer
-```js
-var customerId = 'Customer ID';
-var cardId = 'Card ID';
-var newData = {
-    'holder_name': 'New Holder Name',
-    'cvv2': '123',
-    'expiration_month': '12',
-    'expiration_year': '25',
-    'merchant_id': 'Merchan ID'
-}
-openpay.customers.cards.update(
-    customerId,
-    cardId,
-    newData,
-    function (error, body, response) {
-        // ...
-    });
-```
-###### Without customer
-```js
-var cardId = 'Card ID';
-var newData = {
-    'holder_name': 'New Holder Name',
-    'cvv2': '123',
-    'expiration_month': '12',
-    'expiration_year': '25',
-    'merchant_id': 'Merchan ID'
-}
-openpay.cards.update(
-    cardId,
-    newData,
-    function (error, body, response) {
-        // ...
-    });
-```
 ### Webhooks
 #### Create a webhook
 ```js
