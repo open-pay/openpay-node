@@ -1417,6 +1417,31 @@ openpay.webhooks.create(webhook, function (error, body, response) {
             done();
         });
 ```
+The allowed values fot the field *event_types* are:
+* charge.refunded
+* charge.failed
+* charge.cancelled
+* charge.created
+* charge.succeeded
+* charge.rescored.to.decline
+* subscription.charge.failed
+* payout.created
+* payout.succeeded
+* payout.failed
+* transfer.succeeded
+* fee.succeeded
+* fee.refund.succeeded
+* spei.received
+* chargeback.created
+* chargeback.rejected
+* chargeback.accepted
+* order.created
+* order.activated
+* order.payment.received
+* order.completed
+* order.expired
+* order.cancelled
+* order.payment.cancelled
 #### Get a webhook
 ```js
 var webhookId = 'Webhook ID';
