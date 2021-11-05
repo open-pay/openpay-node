@@ -43,7 +43,7 @@ describe('Get Token', function () {
                 const tokenId = response.data.id;
                 openpay.tokens.get(tokenId, function (error, body, response) {
                     assert.equal(response.statusCode, 200, '');
-                    assert.equal(response.data.id, cardId, '');
+                    assert.equal(response.data.id, tokenId, '');
                     done();
                 });
             });
