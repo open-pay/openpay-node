@@ -1,4 +1,4 @@
-![Openpay nodejs](http://www.openpay.mx/img/github/nodejs.jpg)
+![Openpay nodejs](https://www.openpay.mx/img/github/nodejs.jpg)
 
 ## Installation
 
