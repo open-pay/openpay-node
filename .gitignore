@@ -2,3 +2,4 @@ node_modules
 /npm-debug.log
 .settings/org.eclipse.wst.jsdt.ui.superType.container
 .settings/org.eclipse.wst.jsdt.ui.superType.name
+package-lock.json
