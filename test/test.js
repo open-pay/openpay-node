@@ -4,7 +4,7 @@ var urllib = require('urllib');
 
 var Openpay = require('../lib/openpay');
 /*Sandbox*/
-var openpay = new Openpay('m1qp3av1ymcfufkuuoah', 'sk_ed05f1de65fa4a67a3d3056a4efa2905');
+var openpay = new Openpay('m1qp3av1ymcfufkuuoah', 'sk_ed05f1de65fa4a67a3d3056a4efa2905','138.85.61.94');
 openpay.setTimeout(10000);
 
 var enableLogging = true;
@@ -44,7 +44,7 @@ describe('Testing whole API', function(){
 	  var webhook;
 	  var webhook_params = {
         // Update the requestbin url here. Last change: Feb 3, 2021
-			  'url' : 'https://opey-requestbin.herokuapp.com/12i2q011',
+			  'url' : 'https://webhook.site/fbabe962-95c5-475c-9925-9f769ac3bc7e',
 			  'event_types' : [
 			    'charge.refunded',
 			    'charge.failed',
@@ -831,7 +831,7 @@ describe('Testing whole API', function(){
         });
         describe('Update subscription', function () {
             it('should return statusCode 200', function (done) {
-                openpay.customers.subscriptions.update(newlyCreatedCustomerId, newlyCreatedSubscriptionId, {"trial_end_date": "2022-02-11"}, function (error, body, response) {
+                openpay.customers.subscriptions.update(newlyCreatedCustomerId, newlyCreatedSubscriptionId, {"trial_end_date": "2025-02-11"}, function (error, body, response) {
                     printLog(response.statusCode, body, error);
                     assert.equal(response.statusCode, 200, '');
                     done();
@@ -897,7 +897,23 @@ describe('Testing whole API', function(){
             });
         });
     });
+    describe('Openpay', function() {
+        describe('constructor', function() {
+            it('should throw error when publicIp is null', function() {
+                assert.throws(() => new Openpay('merchantId', 'privateKey', null, 'mx', false),
+                    new Error("Public Ip can't be null or empty"));
+            });
 
+            it('should throw error when publicIp is empty', function() {
+                assert.throws(() => new Openpay('merchantId', 'privateKey', '', 'mx', false),
+                    new Error("Public Ip can't be null or empty"));
+            });
+
+            it('should not throw error when publicIp is provided', function() {
+                assert.doesNotThrow(() => new Openpay('merchantId', 'privateKey', '127.0.0.1', 'mx', false));
+            });
+        });
+    });
 });
 
 

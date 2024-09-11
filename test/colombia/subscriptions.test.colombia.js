@@ -2,7 +2,7 @@ var assert = require('assert');
 var _ = require('underscore');
 var Openpay = require('../../lib/openpay');
 /*Sandbox*/
-var openpay = new Openpay('mwf7x79goz7afkdbuyqd', 'sk_94a89308b4d7469cbda762c4b392152a', 'co', false);
+var openpay = new Openpay('mwf7x79goz7afkdbuyqd', 'sk_94a89308b4d7469cbda762c4b392152a',"138.85.61.94", 'co', false);
 openpay.setTimeout(30000);
 var enableLogging = true;
 
@@ -40,7 +40,7 @@ describe('Plans testing', function () {
     var customer;
     var subscription;
 
-    describe('Create plan', function () {
+    it('Create plan', function () {
         it('should return statusCode 200||201', function (done) {
             openpay.plans.create(newPlan, function (error, body, response) {
                 plan = body;
@@ -50,7 +50,7 @@ describe('Plans testing', function () {
         });
     });
 
-    describe('Create customer', function () {
+    it('Create customer', function () {
         it('create customer for test', function (done) {
             openpay.customers.create(testCreateCustomer, function (error, body, response) {
                 customer = body;
@@ -60,9 +60,9 @@ describe('Plans testing', function () {
     });
 
 
-    describe('Create subscription', function () {
-        subscription.plan_id = plan?.id;
+    it('Create subscription', function () {
         it('should return statusCode 200||201', function (done) {
+            subscription.plan_id = plan.id;
             openpay.customers.subscriptions.create(customer.id, subscription, function (error, body, response) {
                 subscription = body;
                 assert.equal(response.statusCode === 200 || response.statusCode === 201, true, '');
@@ -71,7 +71,7 @@ describe('Plans testing', function () {
         });
     });
 
-    describe('Update subscription', function () {
+    it('Update subscription', function () {
         it('should return statusCode 200||201', function (done) {
             const updateSubscription = {trial_end_date: "2021-12-12"}
             openpay.customers.subscriptions.update(subscription.id, updateSubscription, function (error, body, response) {
@@ -81,7 +81,7 @@ describe('Plans testing', function () {
         });
     });
 
-    describe('Get subscription', function () {
+    it('Get subscription', function () {
         it('should return statusCode 200||201', function (done) {
             openpay.customers.subscriptions.get(customer.id, subscription.id, function (error, body, response) {
                 assert.equal(response.statusCode === 200 || response.statusCode === 201, true, '');
@@ -91,7 +91,7 @@ describe('Plans testing', function () {
     });
 
 
-    describe('subscription List', function () {
+    it('subscription List', function () {
         it('should return statusCode 200||201', function (done) {
             var searchParams = {
                 'limit': 10
@@ -103,7 +103,7 @@ describe('Plans testing', function () {
         });
     });
 
-    describe('Cancell subscription', function () {
+    it('Cancell subscription', function () {
         it('should return statusCode 200||201', function (done) {
             openpay.customers.subscriptions.delete(subscription.id, function (error, body, response) {
                 assert.equal(response.statusCode === 200 || response.statusCode === 201 || response.statusCode === 204, true, '');

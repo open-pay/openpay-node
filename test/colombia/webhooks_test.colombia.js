@@ -3,12 +3,12 @@ var _ = require('underscore');
 
 var Openpay = require('../../lib/openpay');
 /*Sandbox*/
-var openpay = new Openpay('mwf7x79goz7afkdbuyqd', 'sk_94a89308b4d7469cbda762c4b392152a', 'co', false);
+var openpay = new Openpay('mwf7x79goz7afkdbuyqd', 'sk_94a89308b4d7469cbda762c4b392152a',"138.85.61.94", 'co', false);
 openpay.setTimeout(20000);
 var enableLogging = true;
 
 const newWebhook = {
-    "url": "https://webhook.site/ab854ec2-2ac1-423b-9c0b-8502fd056cc9",
+    "url": "https://webhook.site/fbabe962-95c5-475c-9925-9f769ac3bc7e",
     "user": "juanito",
     "password": "passjuanito",
     "event_types": [

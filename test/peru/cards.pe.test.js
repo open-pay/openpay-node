@@ -3,7 +3,7 @@ var _ = require('underscore');
 
 var Openpay = require('../../lib/openpay');
 /*Sandbox*/
-var openpay = new Openpay('m3cji4ughukthjcsglv0', 'sk_f934dfe51645483e82106301d985a4f6', 'pe',false);
+var openpay = new Openpay('m3cji4ughukthjcsglv0', 'sk_f934dfe51645483e82106301d985a4f6', "138.84.62.90",'pe',false);
 openpay.setTimeout(30000);
 var enableLogging = true;
 const card = {
@@ -137,7 +137,7 @@ describe('get cards', function () {
 describe('delete card', function () {
     it('create customer', function (done) {
         var searchParams = {
-            'creation[gte]': '2021-01-01',
+            'creation[gte]': '2024-09-03',
             'limit': 1
         };
         openpay.customers.list(searchParams, function (error, body, response) {
