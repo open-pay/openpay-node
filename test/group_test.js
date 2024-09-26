@@ -5,7 +5,7 @@ var urllib = require('urllib');
 
 var Openpay = require('../lib/openpay');
 /*Sandbox*/
-var openpay = new Openpay('gdntnaxvkcdviesgaxem', 'sk_b97e606487d34b44ab66e03d5bd14747');
+var openpay = new Openpay('gdntnaxvkcdviesgaxem', 'sk_b97e606487d34b44ab66e03d5bd14747',"138.85.61.94");
 openpay.setTimeout(10000);
 
 var enableLogging = true;
@@ -278,7 +278,7 @@ describe('Testing group API', function(){
     });
     describe('Update subscription', function(){
       it('should return statusCode 200', function (done){
-        openpay.groups.customers.subscriptions.update(merchantId, newlyCreatedCustomerId, newlyCreatedSubscriptionId, {"trial_end_date": "2022-02-11"}, function (error, body, response){
+        openpay.groups.customers.subscriptions.update(merchantId, newlyCreatedCustomerId, newlyCreatedSubscriptionId, {"trial_end_date": "2025-02-11"}, function (error, body, response){
           printLog(response.statusCode, body, error);
           assert.equal(response.statusCode, 200, '');
           done();

@@ -14,7 +14,7 @@ Full API documentation available at http://docs.openpay.mx/.
 //class
 var Openpay = require('openpay');
 //instantiation
-var openpay = new Openpay(' your merchant id ', ' your private key ', [ isProduction ]);
+var openpay = new Openpay(' your merchant id ', ' your private key ','public IP address of the client',"mx", [ isProduction ]);
 //use the api
 openpay.< resource_name >.< method_name >( ... )
 ```
@@ -92,7 +92,7 @@ Before use the library will be necessary to set up your Merchant ID and Private 
 
 ```js
 var Openpay = require('openpay');
-var openpay = new Openpay('your merchant id', 'your private key', 'mx', false);
+var openpay = new Openpay('your merchant id', 'your private key','public IP address of the client', 'mx', false);
 openpay.setTimeout(30000);
 ```
 
@@ -102,6 +102,7 @@ In addition, you can set the merchant id, private key, and the mode like this
 openpay.setMerchantId(' your merchant id ');
 openpay.setPrivateKey(' your private key ');
 openpay.setProductionReady(true)
+openpay.setPublicIp('138.84.62.109')
 ```
 
 Once configured the library, you can use it to interact with Openpay API services.

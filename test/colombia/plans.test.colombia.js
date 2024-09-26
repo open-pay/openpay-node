@@ -3,7 +3,7 @@ var _ = require('underscore');
 
 var Openpay = require('../../lib/openpay');
 /*Sandbox*/
-var openpay = new Openpay('mwf7x79goz7afkdbuyqd', 'sk_94a89308b4d7469cbda762c4b392152a', 'co', false);
+var openpay = new Openpay('mwf7x79goz7afkdbuyqd', 'sk_94a89308b4d7469cbda762c4b392152a',"138.85.61.94", 'co', false);
 openpay.setTimeout(20000);
 var enableLogging = true;
 
@@ -14,7 +14,8 @@ var newPlan = {
     "name": "Curso de ingles",
     "repeat_unit": "month",
     "trial_days": "30",
-    "repeat_every": "1"
+    "repeat_every": "1",
+    "currency":"COP",
 }
 describe('Plans testing', function () {
     var plan;
@@ -30,7 +31,7 @@ describe('Plans testing', function () {
 
     describe('Update plan', function () {
         it('should return statusCode 200||201', function (done) {
-            const updatePlan = {name:"plan updated"}
+            const updatePlan = {name:"plan updated"};
             openpay.plans.update(plan.id, updatePlan, function (error, body, response) {
                 assert.equal(response.statusCode === 200 || response.statusCode === 201, true, '');
                 done();
