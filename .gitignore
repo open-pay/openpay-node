@@ -1,5 +1,26 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
 node_modules
-/npm-debug.log
-.settings/org.eclipse.wst.jsdt.ui.superType.container
-.settings/org.eclipse.wst.jsdt.ui.superType.name
-package-lock.json
+dist
+dist-ssr
+*.local
+*.tgz
+*.zip
+.env
+.env.testing
+
+# Editor directories and files
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
