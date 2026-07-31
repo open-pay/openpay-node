@@ -1,5 +1,4 @@
 var assert = require('assert');
-var _ = require('underscore');
 
 var Openpay = require('../../lib/openpay');
 /*Sandbox*/
@@ -198,7 +197,7 @@ describe('Get charges', function () {
 
 function printLog(code, body, error) {
     if (enableLogging) {
-        console.log(code, _.isUndefined(body) || _.isNull(body) ? '' : _.isArray(body) ? _.pluck(body, 'id') : body.id);
+        console.log(code, body == null ? '' : Array.isArray(body) ? body.map(x => x.id) : body.id);
     }
     if (code >= 300) {
         console.log(' ');

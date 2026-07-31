@@ -1,8 +1,83 @@
 ![Openpay nodejs](https://www.openpay.mx/img/github/nodejs.jpg)
 
+> **📦 v4.x (this branch):** Full TypeScript rewrite with strict mode, SOLID architecture,
+> typed interfaces for every resource, and Node.js ≥ 24 LTS.
+> The callback API is 100 % backwards-compatible with v2.x.
+> See [Upgrading from v2.x](#upgrading-from-v2x) below.
+
+## Requirements
+
+- **Node.js ≥ 24.0.0** (active LTS)
+- TypeScript ≥ 5.x (optional — types are bundled)
+
 ## Installation
 
-`npm install openpay`
+```bash
+npm install @neo-cheems/openpay
+```
+
+## Quick Start
+
+### JavaScript (callback API — backwards compatible)
+
+```js
+var Openpay = require('@neo-cheems/openpay');
+var openpay = new Openpay('your_merchant_id', 'your_private_key', 'mx', false);
+
+openpay.charges.create({
+  method: 'card',
+  card: {
+    card_number: '4111111111111111',
+    holder_name: 'John Doe',
+    expiration_year: '28',
+    expiration_month: '12',
+    cvv2: '110'
+  },
+  amount: 200.00,
+  description: 'Service Charge'
+}, function (error, body, response) {
+  if (error) return console.error(error);
+  console.log('Charge created:', body.id);
+});
+```
+
+### TypeScript (typed — zero `any`)
+
+```ts
+import Openpay from '@neo-cheems/openpay';
+import type {
+  ChargeRequest,
+  CustomerRequest,
+  PayoutRequest,
+  Callback,
+} from '@neo-cheems/openpay/types';
+import { OpenpayError } from '@neo-cheems/openpay/errors';
+
+const openpay = new Openpay('your_merchant_id', 'your_private_key', 'mx', false);
+
+// All request data is fully typed
+const charge: ChargeRequest = {
+  method: 'card',
+  card: {
+    card_number: '4111111111111111',
+    holder_name: 'John Doe',
+    expiration_year: '28',
+    expiration_month: '12',
+    cvv2: '110',
+  },
+  amount: 200.00,
+  description: 'Service Charge',
+};
+
+openpay.charges.create(charge, (error, body, response) => {
+  if (error instanceof OpenpayError) {
+    console.error(`Openpay ${error.statusCode}: ${error.description}`);
+    return;
+  }
+  // body is typed as `unknown` — narrow it with your own guards
+  console.log('Charge created:', (body as Record<string, unknown>).id);
+});
+```
 
 ## Documentation
 
@@ -11,19 +86,107 @@ Full API documentation available at http://docs.openpay.mx/.
 ## Overview
 
 ```js
-//class
-var Openpay = require('openpay');
-//instantiation
-var openpay = new Openpay(' your merchant id ', ' your private key ', [ isProduction ]);
-//use the api
-openpay.< resource_name >.< method_name >( ... )
+// Import
+var Openpay = require('@neo-cheems/openpay');
+// or: import Openpay from '@neo-cheems/openpay';
+
+// Instantiation (country code is optional, defaults to 'mx')
+var openpay = new Openpay('your_merchant_id', 'your_private_key', 'mx', false);
+//                          merchantId          privateKey      country  isProduction
+
+// Use any resource
+openpay.<resource>.<method>(params..., callback);
 ```
 
-All methods accept an optional callback as last argument. 
+### Constructor parameters
 
-The callback function should follow the format: function(error, body, response) {...}.
-* error: null if the response status code is 200, 201, 204
-* body: null if the response status code is different from 200, 201, 204
+| Param | Type | Required | Default | Description |
+|-------|------|----------|---------|-------------|
+| `merchantId` | `string` | ✅ | — | Your Openpay merchant ID |
+| `privateKey` | `string` | ✅ | — | Your Openpay private key (`sk_...`) |
+| `countryCode` | `'mx' \| 'pe' \| 'co'` | — | `'mx'` | Country API endpoint |
+| `isProductionReady` | `boolean` | — | `false` | `true` = production, `false` = sandbox |
+
+All methods accept a callback as the **last** argument.
+
+The callback signature is `function(error, body, response)`:
+- `error` — `null` when the response status is 200, 201, or 204; otherwise an `Error` (or `OpenpayError` in v4)
+- `body` — the parsed JSON response body (`null` on error)
+- `response` — `{ statusCode, headers }`
+
+## Architecture (v4.x)
+
+The library follows **SOLID** principles and clean TypeScript patterns:
+
+```
+src/
+  openpay.ts            # Openpay client class (~170 lines)
+  base-resource.ts      # Abstract base for all resources
+  http-client.ts        # HttpClient interface + urllib implementation (DIP)
+  types.ts              # Typed interfaces for all request/response shapes
+  errors.ts             # OpenpayError, NetworkError, TimeoutError
+  stringify-params.ts   # Native ES2022 query-string builder (no underscore)
+  url-utils.ts          # URL bracket escaping
+  resources/
+    merchant.ts         # GET  /{merchantId}
+    charges.ts          # POST /{merchantId}/charges ...
+    payouts.ts          # POST /{merchantId}/payouts ...
+    fees.ts             # POST /{merchantId}/fees ...
+    plans.ts            # CRUD /{merchantId}/plans ...
+    cards.ts            # CRUD /{merchantId}/cards ...
+    customers.ts        # CRUD + 6 sub-resources (cards, charges, transfers, ...)
+    webhooks.ts         # CRUD /{merchantId}/webhooks ...
+    tokens.ts           # CRUD /{merchantId}/tokens ...
+    checkouts.ts        # CRUD /{merchantId}/checkouts ...
+    stores.ts           # GET  /stores (different base URL)
+    pse.ts              # POST /{merchantId}/charges (PSE)
+    groups.ts           # Group customers + charges + subscriptions
+```
+
+| Principle | How it's applied |
+|-----------|-----------------|
+| **S**ingle Responsibility | Each resource class handles exactly one API entity |
+| **O**pen/Closed | New resources extend `BaseResource` without modifying existing code |
+| **L**iskov Substitution | Every resource has a uniform `request()` / `list()` interface |
+| **I**nterface Segregation | `HttpClient`, `Callback<T>`, `OpenpayConfig` — small, focused contracts |
+| **D**ependency Inversion | Resources depend on the `HttpClient` abstraction, not on `urllib` directly |
+
+## Upgrading from v2.x
+
+### What changed
+
+- **Node.js ≥ 24** is now required (was `>=0.6.x`)
+- The library is written in **TypeScript** with `strict: true`
+- The `underscore` dependency has been removed (native ES2022 replacements)
+- Errors are `OpenpayError` instances with `.statusCode`, `.description`, `.category`, `.requestId`
+- Constructor now accepts `countryCode` as the **third** argument:
+
+```js
+// v2.x
+new Openpay(merchantId, privateKey, isProduction);  // old v2 signature
+
+// v4.x
+new Openpay(merchantId, privateKey, countryCode, isProduction);
+```
+
+### What still works
+
+- All `require('@neo-cheems/openpay')` / `require('openpay')` calls (legacy compat)
+- Every resource method and signature
+- The `error, body, response` callback pattern
+- `setMerchantId()`, `setPrivateKey()`, `setProductionReady()`, `setTimeout()`
+- All three country codes: `'mx'`, `'pe'`, `'co'`
+
+## Development
+
+To run the tests you'll need your sandbox credentials from your
+[Dashboard](https://sandbox-dashboard.openpay.mx/):
+
+```bash
+npm install
+npm run build     # compile TypeScript → JavaScript
+npm test          # run the mocha test suite
+```
 
 ## Examples
 
@@ -86,36 +249,6 @@ openpay.payouts.create(payout, function (error, body, response){
   // ...
 });
 ```
-
-## Configuration
-Before use the library will be necessary to set up your Merchant ID and Private key.
-
-```js
-var Openpay = require('openpay');
-var openpay = new Openpay('your merchant id', 'your private key', 'mx', false);
-openpay.setTimeout(30000);
-```
-
-In addition, you can set the merchant id, private key, and the mode like this
-
-```js
-openpay.setMerchantId(' your merchant id ');
-openpay.setPrivateKey(' your private key ');
-openpay.setProductionReady(true)
-```
-
-Once configured the library, you can use it to interact with Openpay API services.
-
-## Development
-
-To run the tests you'll need your sandbox credentials: merchant id and private key from your [Dashboard](https://sandbox-dashboard.openpay.mx/):
-
-```bash
-$ npm install -g mocha
-$ npm test
-```
-
-# Implementation
 
 ## Usage for Mexico
 

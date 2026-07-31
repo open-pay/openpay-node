@@ -1,7 +1,5 @@
 var assert = require('assert');
-var _ = require('underscore');
 // var request = require('request');
-var urllib = require('urllib');
 
 var Openpay = require('../lib/openpay');
 /*Sandbox*/
@@ -337,7 +335,7 @@ describe('Testing group API', function(){
 
 function printLog(code, body, error){
   if(enableLogging){
-    console.log(code, _.isUndefined(body) || _.isNull(body) ? '' : _.isArray(body) ? _.pluck(body, 'id') : body.id);
+    console.log(code, body == null ? '' : Array.isArray(body) ? body.map(x => x.id) : body.id);
   }
   if(code>=300){
     console.log(' ');
@@ -347,15 +345,21 @@ function printLog(code, body, error){
 }
 
 function getVerificationCode(url, callback) {
-  urllib.request(url, function(err, body, res){
-    var resCode = res.statusCode;
-    var error = (resCode!=200 && resCode!=201 && resCode!=204) ? body : null;
-    var verification_code = null;
-    console.info('error: ' + error);
-    if (!error) {
-      verification_code = body.toString().substring(body.indexOf('verification_code') + 28 , body.indexOf('verification_code') + 28 + 8);
-      console.info('verification_code: ' + verification_code);
-    }
-    callback(error, verification_code);
-  });
+  fetch(url)
+    .then(function(res) {
+      var resCode = res.status;
+      var error = (resCode != 200 && resCode != 201 && resCode != 204) ? res.statusText : null;
+      return res.text().then(function(body) {
+        console.info('error: ' + error);
+        var verification_code = null;
+        if (!error) {
+          verification_code = body.substring(body.indexOf('verification_code') + 28 , body.indexOf('verification_code') + 28 + 8);
+          console.info('verification_code: ' + verification_code);
+        }
+        callback(error, verification_code);
+      });
+    })
+    .catch(function(err) {
+      callback(err, null);
+    });
 }
